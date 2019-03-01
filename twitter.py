@@ -10,10 +10,11 @@ list_to_scrap_suicidal = ["suicidal","suicide","kill myself","my suicide note","
 ,"wanna suicide","commit suicide","die now","slit my wrist","cut my wrist","slash my wrist","do not want to be here","want it to be over","want to be dead","nothing to live for"
 ,"ready to die","thoughts of suicide","suicide ideation","why should i live","take my own life","depressed"]
 
-list_to_scrap_non_suicidal = ["movie","play","enjoyed","party","fun","memorable","adventure","exciting"]
+list_to_scrap_non_suicidal = ["movie","play","enjoyed","party","fun","memorable","adventure","exciting","cricket","news","engaged","marriage","aeroplane","fruits","balloon","bible"
+,"vegetables","temple","circus","clock","kitchen","library","liquid","map","office","radar","rainbow","sandwich","food","subway","space","dog","pet","panda","tv","superhero","school"]
 
 def scrape_function(type, sterm):
-    URL = "https://twitter.com/search?f=tweets&vertical=default&q="+sterm+"&src=typd"
+    URL = "https://twitter.com/search?f=tweets&vertical=default&q="+sterm+"&l=en&src=typd"
     driver = webdriver.Firefox()
     driver.get(URL)
     soup = BeautifulSoup(driver.page_source, "lxml")
@@ -24,48 +25,21 @@ def scrape_function(type, sterm):
         tweetReplyList = soup.findAll(attrs = {'class' : 'tweet-timestamp js-permalink js-nav js-tooltip'})
         for content in tweetReply:
             if content is not None:
-                content = content.get_text() + "<end>"
+                content = content.get_text().replace("\n", " ")
                 tweetReplyContent.append(content)
-    print(tweetReplyContent)
+    write_function(type, tweetReplyContent)
     driver.quit()
 
 def write_function(type, content):
-    with open("output.txt", "a+") as f:
-        f.write(type)
-        f.write("<end_title>")
+    with open("output", "a+") as f:
         for i in content:
-            f.write(i)
+            f.write(type)
+            f.write("\t\t")
+            f.write("%s" % i)
+            f.write("\n")
     f.close()
 
 if __name__ == "__main__":
-    while(True):
-        choice = random.randint(1,10)
-        print(choice)
-        i = 0 # for tracking suicidal
-        j = 0 # for tracking non suicidal
-        if(choice%2 == 0):
-            if(i > (len(list_to_scrap_suicidal) - 1)):
-                scrape_function("non suicidal", list_to_scrap_non_suicidal[j])
-                j = j + 1
-            elif(j > (len(list_to_scrap_non_suicidal) - 1)):
-                scrape_function("suicidal", list_to_scrap_suicidal[i])
-                i = i + 1
-            else:
-                break
-        else:
-            if(j > (len(list_to_scrap_non_suicidal) - 1)):
-                scrape_function("suicidal", list_to_scrap_suicidal[i])
-                i = i + 1
-            elif(i > (len(list_to_scrap_suicidal) - 1)):
-                scrape_function("non suicidal", list_to_scrap_non_suicidal[j])
-                j = j + 1
-            else:
-                break
-    if(i < (len(list_to_scrap_suicidal) - 1)):
-        while(i < (len(list_to_scrap_suicidal) - 1)):
-            scrape_function("suicidal", list_to_scrap_suicidal[i])
-            i = i + 1
-    if(j < (len(list_to_scrap_non_suicidal) - 1)):
-        while(j < (len(list_to_scrap_non_suicidal) - 1)):
-            scrape_function("non suicidal", list_to_scrap_non_suicidal[j])
-            j = j + 1
+    for i, j in zip(list_to_scrap_suicidal, list_to_scrap_non_suicidal):
+        scrape_function("suicidal", i)
+        scrape_function("non suicidal", j)
