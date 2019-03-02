@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">ReachOut</string>
+    <string name="server_url">http://192.168.117.228:8000/</string>
+    <string name="title_shop">Check a Person</string>
+    <string name="title_gifts">Get Help Online</string>
+</resources>

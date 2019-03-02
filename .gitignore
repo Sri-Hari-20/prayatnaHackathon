@@ -1,2 +1,4 @@
 geckodriver.log
 *.txt
+output
+Flask\ Server/audio/
