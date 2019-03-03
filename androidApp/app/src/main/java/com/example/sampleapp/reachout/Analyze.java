@@ -15,11 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONObject;
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -81,18 +78,21 @@ public class Analyze extends AppCompatActivity {
                     creds.put("link", link.getText().toString().trim());
                     creds.put("email", SaveSharedPreference.getEmail(getApplicationContext()));
                     creds.put("messages", messages.getText().toString());
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    InputStream in =
-                            getContentResolver().openInputStream(audiouri);
-                    int read;
-                    byte[] buff = new byte[1024];
-                    while ((read = in.read(buff)) > 0) {
-                        out.write(buff, 0, read);
+                    creds.put("audio", "");
+                    if(audiouri != null) {
+                        ByteArrayOutputStream out = new ByteArrayOutputStream();
+                        InputStream in =
+                                getContentResolver().openInputStream(audiouri);
+                        int read;
+                        byte[] buff = new byte[1024];
+                        while ((read = in.read(buff)) > 0) {
+                            out.write(buff, 0, read);
+                        }
+                        out.flush();
+                        byte[] audioBytes = out.toByteArray();
+                        String audioEncoded = Base64.encodeToString(audioBytes, Base64.DEFAULT);
+                        creds.put("audio", audioEncoded);
                     }
-                    out.flush();
-                    byte[] audioBytes = out.toByteArray();
-                    String audioEncoded = Base64.encodeToString(audioBytes, Base64.DEFAULT);
-                    creds.put("audio", audioEncoded);
 
                     new analyzeSend().execute(getString(R.string.server_url)+"analyze", creds.toString());
                 } catch (Exception e) {
@@ -149,11 +149,14 @@ public class Analyze extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            if(data.equals("Done")){
-                Toast.makeText(getApplicationContext(), "Audio sent successfully", Toast.LENGTH_LONG).show();
-            }
-            else if(data.equals("NF")){
+            if(s.equals("NF")){
                 Toast.makeText(getApplicationContext(), "Audio failed", Toast.LENGTH_LONG).show();
+                return ;
+            }
+            else{
+                Intent display = new Intent(getApplicationContext(), DisplayResults.class);
+                display.putExtra("json", s);
+                startActivity(display);
             }
         }
     }

@@ -31,6 +31,13 @@ public class MainPage extends AppCompatActivity {
             }
         });
 
+        gethelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gethelp = new Intent(getApplicationContext(), HelpActivity.class);
+                startActivity(gethelp);
+            }
+        });
         analyze.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

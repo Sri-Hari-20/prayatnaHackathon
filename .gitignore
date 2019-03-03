@@ -1,4 +1,6 @@
 geckodriver.log
 *.txt
 output
-Flask\ Server/audio/
+Flask\ Server/data/
+Flask\ Server/geckodriver.log
+Flask\ Server/__pycache__/
