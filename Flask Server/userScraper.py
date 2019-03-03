@@ -11,7 +11,7 @@ non_bmp_map = dict.fromkeys(range(0x10000, sys.maxunicode + 1), 0xfffd)
 def write_function(content, path):
     if not os.path.exists(path):
         os.makedirs(path)
-    path = path + "/twitter_output"
+    path = path + "/twitter_output.txt"
     with open(path, "w+", encoding="utf-8") as f:
         for i in content:
             f.write("%s" % i)

@@ -9,12 +9,14 @@ def eval(file_name,choice):
 	if choice == 1:
 		text.append(recognize(file_name))
 	else:
-		with open(file_name,"rb") as f:
+		with open(file_name,"rt") as f:
 			lines = f.readlines()
+			print(lines)
 			for line in lines:
-				text.append(str(line))
+				text.append(line)
 	nb_count = 0
 	svm_count = 0
+	print(text)
 	total = len(text)
 	for i in text:
 		if analyse(i) <= 0.1:

@@ -65,16 +65,16 @@ def analyze_function():
         if(analyze_creds["link"] != ""):
             user_scraping(analyze_creds["link"], path)
 
-        file = path + "/twitter_output"
+        file = path + "/twitter_output.txt"
         print(analyze_creds["messages"])
         if(analyze_creds["messages"] != ""):
             if not os.path.exists(path):
                 os.makedirs(path)
-            lines = str.splitlines(analyze_creds["messages"])
-            print(lines)
+            lines = analyze_creds["messages"].split(";")
             with open(file, "a+") as f:
                 for i in lines:
                     f.write(i)
+                    f.write("\n")
         if os.path.exists(file):
             result["class"] = eval(file, 2)
             result["class"] = round(result["class"], 2)

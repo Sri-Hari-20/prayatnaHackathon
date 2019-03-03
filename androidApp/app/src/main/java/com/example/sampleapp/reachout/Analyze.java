@@ -77,7 +77,8 @@ public class Analyze extends AppCompatActivity {
                 try {
                     creds.put("link", link.getText().toString().trim());
                     creds.put("email", SaveSharedPreference.getEmail(getApplicationContext()));
-                    creds.put("messages", messages.getText().toString());
+                    String msg = messages.getText().toString();
+                    creds.put("messages", msg);
                     creds.put("audio", "");
                     if(audiouri != null) {
                         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -150,7 +151,7 @@ public class Analyze extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             if(s.equals("NF")){
-                Toast.makeText(getApplicationContext(), "Audio failed", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Try Again!", Toast.LENGTH_LONG).show();
                 return ;
             }
             else{
