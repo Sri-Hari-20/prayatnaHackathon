@@ -16,9 +16,20 @@ This is an Android application for the prediction of suicidal tendencies of a pe
   2. Flask server side files
 
 ### Dependencies
-  * Android Studio
+##### Python Modules
   * Flask
+  * Selenium (By default configured for firefox)
   * Scikit Learn (For NB and SVM classsification)
+  * pymongo
+  * BeautifulSoup4
+  * speech_recognition
+  * VaderSentiment
+  * NLTK (all corpus)
+
+##### Software
+  * Android Studio
+  * Selenium WebDriver
+  * MongoDB
   
 #### Setup
 <p>Install the application on to your phone using the project files opened on android studio. At the time of development we do not have a production server hence REST api calls were done with hard coding the IP Address and Port. Change its reference in strings.xml and you should be all set.<p>
